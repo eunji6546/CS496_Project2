@@ -76,6 +76,7 @@ public class MainActivity extends FragmentActivity {
             public void onSuccess(LoginResult loginResult) {
                 Toast.makeText(getApplicationContext(), "Login Succeed", Toast.LENGTH_SHORT).show();
 
+
                 new GraphRequest(
                         AccessToken.getCurrentAccessToken(),
                         "/me/taggable_friends",
