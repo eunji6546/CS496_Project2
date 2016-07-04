@@ -2,9 +2,12 @@ package com.example.q.practice_a;
 
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
+//import android.app.Fragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,7 +20,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.facebook.login.LoginManager;
+
 
 
 public class MyActivity extends AppCompatActivity {
@@ -135,7 +140,21 @@ public class MyActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            //return PlaceholderFragment.newInstance(position + 1);
+            String ARG_SECTION_NUMBER = "section_number";
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, position+1);
+
+            switch (position){
+                case 0:
+                    return Tab1Fragment.newInstance(args);
+                case 1:
+                    return Tab2Fragment.newInstance(args);
+                case 2:
+                    return Tab3Fragment.newInstance(args);
+                default:
+                    return PlaceholderFragment.newInstance(position + 1);
+            }
         }
 
         @Override
@@ -158,11 +177,4 @@ public class MyActivity extends AppCompatActivity {
             return null;
         }
     }
-/*
-    public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.action_settings:
-                Toast.makeText(getApplicationContext(),"토스트창에 출력될 문자", Toast.LENGTH_LONG);
-        }
-    }*/
 }
