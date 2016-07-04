@@ -181,11 +181,11 @@ public class MainActivity extends FragmentActivity {
                             public void onCompleted(final GraphResponse response) {
                                 new Thread(){
                                     public void run() {
-                                        new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",response.toString());
+                                        new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",response.getJSONObject().toString());
                                     }
                                 }.start();
                                 Intent intent = new Intent(MainActivity.this,MyActivity.class);
-                                intent.putExtra("taggable_friends",response.toString());
+                                intent.putExtra("taggable_friends",response.getJSONObject().toString());
                                 startActivity(intent);
 
                             }
