@@ -1,32 +1,37 @@
 package com.example.q.practice_a;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 //import android.app.Fragment;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class Tab1Fragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-
     public Tab1Fragment() {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
     public static Tab1Fragment newInstance(Bundle args) {
         Tab1Fragment fragment = new Tab1Fragment();
         Bundle arg = new Bundle();
@@ -44,6 +49,22 @@ public class Tab1Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_tab1, container, false);
+    }
+
+    public class ListViewExampleClickListener implements AdapterView.OnItemClickListener{
+        String  pn;
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//            Intent intent = new Intent(getActivity(), ContactDetail.class);
+//            getViewByPosition(position,(ListView)view);
+//            //여기에 넘버 찾아서 넘기기 모르겠다 !!
+//
+//            OneContact mData = ListViewAdapter.mListData.get(position);
+//            intent.putExtra("phoneNumber",mData.mNumberOrEmail);
+//            startActivity(intent);
+//            //적당한 리스너 만들기
+
+        }
     }
 
     public interface OnFragmentInteractionListener {
