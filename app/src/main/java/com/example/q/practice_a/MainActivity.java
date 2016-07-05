@@ -187,15 +187,14 @@ public class MainActivity extends FragmentActivity {
                                 new Thread(){
                                     public void run() {
 
-                              try {
+                                        try {
                                             JSONArray ja = response.getJSONObject().getJSONArray("data");
                                             //new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",ja.toString());
-                                  new HttpConnectionThread().doInBackground("http://143.248.47.61:8000/",ja.toString());
+                                            new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/",ja.toString());
 
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-
                                     }
                                 }.start();
                                 Intent intent = new Intent(MainActivity.this,MyActivity.class);
@@ -221,53 +220,7 @@ public class MainActivity extends FragmentActivity {
         });
     }
 
-    public class HttpConnectionThread extends AsyncTask<String,Void, String> {
 
-        @Override
-        protected String doInBackground(String... url) {
-            URL murl;
-            String response = null;
-
-            try {
-                murl = new URL(url[0]);
-                HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
-                conn.setReadTimeout(10000 /* milliseconds */);
-                conn.setConnectTimeout(15000 /* milliseconds */);
-                conn.setRequestMethod("POST");
-               // conn.setRequestProperty("Accept", "application/json");
-                conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
-                conn.setRequestProperty("Accept-Charset", "UTF-8");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                conn.connect();
-
-                conn.getOutputStream();
-                OutputStream os =  conn.getOutputStream();
-
-                JSONArray jarray = null;
-                try {
-                    jarray = new JSONArray(url[1]);
-                    os.write(jarray.toString().getBytes("UTF-8"));
-                } catch (JSONException e) {
-                    Log.e("tt","Don/t do that");
-                    e.printStackTrace();
-                }
-                os.flush();
-                os.close();
-                response = conn.getResponseMessage();
-
-            } catch (IOException e) {
-
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
     @Override

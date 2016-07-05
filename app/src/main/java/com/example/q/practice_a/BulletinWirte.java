@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,20 +46,26 @@ public class BulletinWirte extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getBaseContext(), "저장 중 입니다..",  Toast.LENGTH_LONG).show();
-                    EditText name = (EditText)findViewById(R.id.writer);
-                    EditText pw = (EditText)findViewById(R.id.pw);
-                    EditText title = (EditText)findViewById(R.id.title);
-                    EditText text = (EditText)findViewById(R.id.text);
-                    JSONObject jo = new JSONObject();
-                    try {
-                        jo.put("pw",pw.getText().toString());
-                        jo.put("name",name.getText().toString());
-                        jo.put("title",title.getText().toString());
-                        jo.put("text",text.getText().toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        Log.e("JSON","~~~~~~~~~~");
-                    }
+                    new Thread() {
+                        public void run() {
+                            EditText name = (EditText)findViewById(R.id.writer);
+                            EditText pw = (EditText)findViewById(R.id.pw);
+                            EditText title = (EditText)findViewById(R.id.title);
+                            EditText text = (EditText)findViewById(R.id.text);
+                            JSONObject jo = new JSONObject();
+                            JSONArray ja = new JSONArray();
+                            try {
+                                jo.put("pw",pw.getText().toString());
+                                jo.put("name",name.getText().toString());
+                                jo.put("title",title.getText().toString());
+                                jo.put("text",text.getText().toString());
+                                ja.put(jo);
+                                new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/postlist", ja.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
                 }
             });
         }
