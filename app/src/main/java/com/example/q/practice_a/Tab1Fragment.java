@@ -76,15 +76,14 @@ public class Tab1Fragment extends Fragment {
 
         contactListView = (ListView)rootView.findViewById(R.id.contactList);
 
-        // 휴대폰 연락처 보내기
 
+        // 휴대폰 연락처 보내기
         new Thread(){
             public void run() {
                 try {
                     JSONArray jarray = sendJSONinfo();
-
                    // new HttpConnectionThread2().doInBackground("http://143.248.47.163:3000/insert",jarray.toString());
-                    new HttpConnectionThread2().doInBackground("http://143.248.47.61:8000",jarray.toString());//ej's ip
+                    new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/insert/pb",jarray.toString());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -199,54 +198,6 @@ public class Tab1Fragment extends Fragment {
         char[] buffer = new char[len];
         reader.read(buffer);
         return new String(buffer);
-    }
-
-
-    public class HttpConnectionThread2 extends AsyncTask<String,Void, String> {
-
-        @Override
-        protected String doInBackground(String... url) {
-            URL murl;
-            String response = null;
-            try {
-                murl = new URL(url[0]);
-                HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
-
-                conn.setReadTimeout(10000 /* milliseconds */);
-                conn.setConnectTimeout(15000 /* milliseconds */);
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
-                conn.setRequestProperty("Accept-Charset", "UTF-8");
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.connect();
-
-                conn.getOutputStream();
-                OutputStream os =  conn.getOutputStream();
-
-                JSONArray jarray = null;
-                try {
-                    jarray = new JSONArray(url[1]);
-                    os.write(jarray.toString().getBytes("UTF-8"));
-                } catch (JSONException e) {
-                    Log.e("tt","Don/t do that");
-                    e.printStackTrace();
-                }
-                os.flush();
-                os.close();
-                response = conn.getResponseMessage();
-
-            } catch (IOException e) {
-
-            }
-
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(getActivity(), result, Toast.LENGTH_SHORT).show();
-        }
     }
 
     public JSONArray sendJSONinfo() throws JSONException {

@@ -205,9 +205,6 @@ public class MainActivity extends FragmentActivity {
                 ).executeAsync();
             }
 
-
-
-
             @Override
             public void onCancel() {
                 Toast.makeText(MainActivity.this, "로그인을 취소 하였습니다!", Toast.LENGTH_SHORT).show();
@@ -219,9 +216,6 @@ public class MainActivity extends FragmentActivity {
             }
         });
     }
-
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
