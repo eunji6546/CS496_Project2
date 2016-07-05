@@ -50,6 +50,7 @@ public class Tab1Fragment extends Fragment {
     ListViewAdapter listViewAdapter;
     JSONObject object;
     JSONArray contactList;
+    String getResponse;
 
     public Tab1Fragment() {
         // Required empty public constructor
@@ -93,8 +94,8 @@ public class Tab1Fragment extends Fragment {
         }.start();
         // Inflate the layout for this fragment
 
-        // 서버에서 받아서
-        //리스트 뷰에 넣는거 짜야함
+        // 서버에서 받아서 리스트 뷰에 넣기
+
         new Thread() {
             public void run() {
                 new DownloadContactList().doInBackground("http://143.248.47.163:3000/list");
@@ -121,11 +122,38 @@ public class Tab1Fragment extends Fragment {
             // params comes from the execute() call: params[0] is the url.
             try {
 
-                return downloadUrl(url[0]);
 
-            } catch (IOException e) {
-                return "Unable to retrieve web page. URL may be invalid.";
+
+                // 리스트 뷰에 넣기
+                // [{name : a , id : b, photo: c},{},{}]
+                listViewAdapter = new ListViewAdapter(getActivity());
+                try {
+                    JSONArray jsonArray = new JSONArray(downloadUrl(url[0]));
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject one = jsonArray.getJSONObject(i);
+                        String name;
+                        String numberOremail;
+                        String from;
+                        String photo; //url?
+
+                        name = one.getString("name");
+                        numberOremail = one.getString("numberOrEmail");
+                        from = one.getString("from");
+                        photo = one.getString("profile");
+
+                        listViewAdapter.addItem(photo, name, numberOremail, from);
+
+                    }
+
+            }catch (JSONException e){
+                e.printStackTrace();
             }
+
+
+        } catch (IOException e) {
+                Log.e("","Unable to retrieve web page. URL may be invalid.");
+            }
+            return null;
         }
         // onPostExecute displays the results of the AsyncTask.
         @Override
@@ -331,14 +359,17 @@ public class Tab1Fragment extends Fragment {
         String  pn;
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            Intent intent = new Intent(getActivity(), ContactDetail.class);
-//            getViewByPosition(position,(ListView)view);
-//            //여기에 넘버 찾아서 넘기기 모르겠다 !!
+            Intent intent = new Intent(getActivity(), ContactDetail.class);
+
 //
-//            OneContact mData = ListViewAdapter.mListData.get(position);
-//            intent.putExtra("phoneNumber",mData.mNumberOrEmail);
-//            startActivity(intent);
-//            //적당한 리스너 만들기
+            OneContact mData = ListViewAdapter.mListData.get(position);
+            intent.putExtra("name",mData.mNumberOrEmail);
+            intent.putExtra("numberOrEmail",mData.mNumberOrEmail);
+            intent.putExtra("profilePhoto", (CharSequence) mData.mPhoto); //되나?
+            intent.putExtra("from",mData.mFrom);
+
+            startActivity(intent);
+
 
         }
     }

@@ -1,6 +1,7 @@
 package com.example.q.practice_a;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by q on 2016-07-04.
- */
+
 public class ListViewAdapter extends BaseAdapter {
     private Context mContext = null;
     public static ArrayList<OneContact> mListData = new ArrayList<>();
@@ -41,7 +40,6 @@ public class ListViewAdapter extends BaseAdapter {
             holder.mPhoto = (ImageView) convertView.findViewById(R.id.mPhoto);
             holder.mName = (TextView) convertView.findViewById(R.id.mName);
             holder.mNumberOrEmail = (TextView) convertView.findViewById(R.id.mNumberOrEmail);
-
             convertView.setTag(holder);
 
         }else {
@@ -50,13 +48,13 @@ public class ListViewAdapter extends BaseAdapter {
         OneContact mData = mListData.get(position);
 
         if (mData.mPhoto!=null){
-            holder.mPhoto.setVisibility(View.VISIBLE);
-            holder.mPhoto.setImageDrawable(mData.mPhoto);
+            //holder.mPhoto.setVisibility(View.VISIBLE);
+            //holder.mPhoto.setImageDrawable(mData.mPhoto);
         }else {
             // Default photo
         }
 
-        if (mData.mFrom==0 ){
+        if (mData.mFrom=="0" ){
             // from facebook
             holder.mContactType.setVisibility(View.VISIBLE);
             holder.mContactType.setImageResource(R.drawable.facebook_logo);
@@ -77,5 +75,17 @@ public class ListViewAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void addItem(String photo, String name, String number, String from ){
+        //assume that photo is url
+
+        OneContact addInfo;
+        addInfo = new OneContact();
+        addInfo.mPhoto = photo;
+        addInfo.mName = name;
+        addInfo.mNumberOrEmail = number;
+        addInfo.mFrom = from;
+
+        mListData.add(addInfo);
+    }
 
 }

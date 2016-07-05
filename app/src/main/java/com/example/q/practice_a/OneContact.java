@@ -10,10 +10,11 @@ import java.util.Comparator;
  */
 public class OneContact {
     /* 리스트 정보를 담고 있을 객체 생성 */
-    public Drawable mPhoto;
+    //public Drawable mPhoto;
+    public String mPhoto;
     public String mName;
     public String mNumberOrEmail;
-    public Long mFrom; // 0:From Facebook, 1: From Phone
+    public String  mFrom; // 0:From Facebook, 1: From Phone
 
 
     /* 알파벳 정렬 */
