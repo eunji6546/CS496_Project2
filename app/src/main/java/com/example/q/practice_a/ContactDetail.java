@@ -3,6 +3,7 @@ package com.example.q.practice_a;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,18 +25,25 @@ public class ContactDetail extends AppCompatActivity {
         String from = i.getStringExtra("from");
 
 
+
         mNumberOrEmail = (TextView) findViewById(R.id.textView3);
         mNumberOrEmail.setText(pn);
         mName = (TextView)findViewById(R.id.textView2);
         mName.setText(name);
+        mPhoto = (ImageView)findViewById(R.id.imageView) ;
+        new DownloadImageTask((ImageView) mPhoto)
+                .execute(photo);
 
         //vhxh
 
         mFrom = (ImageView)findViewById(R.id.imageView2);
 
-        if (from == "0"){
+        Log.e("_____",from);
+        if (from.equals("0")){
+            Log.e("!!!","FACEBOOK");
             mFrom.setImageResource(R.drawable.facebook_logo);
         }else{
+            Log.e("!!!","PHONEBOOK");
             mFrom.setImageResource(R.drawable.phonebook);
         }
 

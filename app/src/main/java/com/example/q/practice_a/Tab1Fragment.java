@@ -168,6 +168,9 @@ public class Tab1Fragment extends Fragment {
         protected void onPostExecute(String result) {
             Log.e("S","SDFASDFASDFASDFASDF");
             contactListView.setAdapter(listViewAdapter);
+            ListViewExampleClickListener listViewExampleClickListener = new ListViewExampleClickListener();
+            contactListView.setOnItemClickListener(listViewExampleClickListener);
+
         }
     }
     // Given a URL, establishes an HttpUrlConnection and retrieves
@@ -287,14 +290,13 @@ public class Tab1Fragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(getActivity(), ContactDetail.class);
-
-//
+            Log.e("**","*************");
             OneContact mData = ListViewAdapter.mListData.get(position);
-            intent.putExtra("name",mData.mNumberOrEmail);
+            intent.putExtra("name",mData.mName);
             intent.putExtra("numberOrEmail",mData.mNumberOrEmail);
             intent.putExtra("profilePhoto", (CharSequence) mData.mPhoto); //되나?
             intent.putExtra("from",mData.mFrom);
-
+            Log.e("**","*************");
             startActivity(intent);
 
 

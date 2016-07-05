@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -31,7 +32,6 @@ public class ListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
 
-        Log.e("p","GET VIEWWWWWWWWWWWWw");
         ViewHolder holder;
         if (convertView == null){
             holder = new ViewHolder();
@@ -52,12 +52,15 @@ public class ListViewAdapter extends BaseAdapter {
         OneContact mData = mListData.get(position);
 
         if (mData.mPhoto!=null){
+            new DownloadImageTask((ImageView) holder.mPhoto)
+                    .execute(mData.mPhoto);
             //holder.mPhoto.setVisibility(View.VISIBLE);
             //holder.mPhoto.setImageDrawable(mData.mPhoto);
         }else {
             // Default photo
         }
 
+        Log.e("))))))",mData.mFrom);
         if (mData.mFrom=="0" ){
             // from facebook
             holder.mContactType.setVisibility(View.VISIBLE);
