@@ -30,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -96,7 +97,7 @@ public class Tab1Fragment extends Fragment {
 
         new Thread() {
             public void run() {
-                new DownloadContactList().doInBackground("http://143.248.47.61:8000/fbcontacts");
+                new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
 
             }
         }.start();
@@ -123,7 +124,9 @@ public class Tab1Fragment extends Fragment {
                 // [{name : a , id : b, photo: c},{},{}]
                 listViewAdapter = new ListViewAdapter(getActivity());
                 try {
+                    Log.e("11","!!!!!11!!!!!1");
                     JSONArray jsonArray = new JSONArray(downloadUrl(url[0]));
+                    Log.e("222","@@@@@@@@@@@@@");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject one = jsonArray.getJSONObject(i);
                         String name;
@@ -131,19 +134,29 @@ public class Tab1Fragment extends Fragment {
                         String from;
                         String photo; //url?
 
+
                         name = one.getString("name");
-                        numberOremail = one.getString("numberOrEmail");
-                        from = one.getString("from");
-                        photo = one.getString("profile");
+                        try {
+
+                            numberOremail = one.getString("numberOrEmail");
+                            from = "1";
+                        }catch (JSONException e){
+                            //페북연락처일때
+                            numberOremail = "DO NOT HAVE NUMBER";
+                            from = "0";
+                        }
+
+                        photo = one.getString("photo");
+                        Log.e("NAME",name);
 
                         listViewAdapter.addItem(photo, name, numberOremail, from);
 
                     }
 
+
             }catch (JSONException e){
                 e.printStackTrace();
             }
-
 
         } catch (IOException e) {
                 Log.e("","Unable to retrieve web page. URL may be invalid.");
@@ -153,7 +166,8 @@ public class Tab1Fragment extends Fragment {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-
+            Log.e("S","SDFASDFASDFASDFASDF");
+            contactListView.setAdapter(listViewAdapter);
         }
     }
     // Given a URL, establishes an HttpUrlConnection and retrieves
@@ -177,10 +191,25 @@ public class Tab1Fragment extends Fragment {
             int response = conn.getResponseCode();
             is = conn.getInputStream();
 
-            // Convert the InputStream into a string
-            String contentAsString = readIt(is, len);
-            Log.e("@@",contentAsString);
-            return contentAsString;
+//            // Convert the InputStream into a string
+//            String contentAsString = readIt(is, len);
+//           // Log.e("@@",contentAsString);
+//            return contentAsString;
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader ( conn.getInputStream() )
+            );
+
+            JSONArray jsonResponse = null;
+            //initiate strings to hold response data
+            String inputLine;
+            String responseData = "";
+            //read the InputStream with the BufferedReader line by line and add each line to responseData
+            while ( ( inputLine = in.readLine() ) != null ){
+                responseData += inputLine;
+            }
+
+         return responseData;
+
 
             // Makes sure that the InputStream is closed after the app is
             // finished using it.

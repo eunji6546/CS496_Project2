@@ -2,6 +2,7 @@ package com.example.q.practice_a;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class ListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent){
 
+        Log.e("p","GET VIEWWWWWWWWWWWWw");
         ViewHolder holder;
         if (convertView == null){
             holder = new ViewHolder();
@@ -40,7 +42,9 @@ public class ListViewAdapter extends BaseAdapter {
             holder.mPhoto = (ImageView) convertView.findViewById(R.id.mPhoto);
             holder.mName = (TextView) convertView.findViewById(R.id.mName);
             holder.mNumberOrEmail = (TextView) convertView.findViewById(R.id.mNumberOrEmail);
+            holder.mContactType = (ImageView)convertView.findViewById(R.id.mContactType);
             convertView.setTag(holder);
+            Log.e("@@@",holder.mNumberOrEmail.toString());
 
         }else {
             holder = (ViewHolder) convertView.getTag();
@@ -78,6 +82,7 @@ public class ListViewAdapter extends BaseAdapter {
     public void addItem(String photo, String name, String number, String from ){
         //assume that photo is url
 
+        Log.e("J","ASDFSADFSADFASD0");
         OneContact addInfo;
         addInfo = new OneContact();
         addInfo.mPhoto = photo;
