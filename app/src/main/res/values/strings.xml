@@ -3,6 +3,9 @@
     <string name="action_settings">Settings</string>
     <string name="facebook_app_id">PRACTICE_A</string>
     <string name="app_id">1025911370825119</string>
+    <string name="title">제목을 입력하세요 Ex) CS496 짱짱</string>
+    <string name="writer">이름을 입력하세요. Ex) 홍길동 </string>
+    <string name="text">쓰고 싶은 글을 쓰세요. \nEx) 시간이 너무 빨라용~</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
     <!-- TODO: Remove or change this placeholder text -->
