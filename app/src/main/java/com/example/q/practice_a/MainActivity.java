@@ -233,10 +233,10 @@ public class MainActivity extends FragmentActivity {
                                 new Thread(){
                                     public void run() {
 
-                                        new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",response.getJSONObject().toString());
                               try {
                                             JSONArray ja = response.getJSONObject().getJSONArray("data");
                                             new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",ja.toString());
+
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -281,6 +281,7 @@ public class MainActivity extends FragmentActivity {
                 conn.setRequestMethod("POST");
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
+                Log.e("Hi","HHHHHHHHHHHHHHH");
                 conn.connect();
                 conn.getOutputStream();
                 OutputStream os =  conn.getOutputStream();
