@@ -31,6 +31,9 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,16 +64,16 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{Manifest.permission.READ_CONTACTS},
-                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-        ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-
-        ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION },
-                MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION );
+//        ActivityCompat.requestPermissions(MainActivity.this,
+//                new String[]{Manifest.permission.READ_CONTACTS},
+//                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+//        ActivityCompat.requestPermissions(MainActivity.this,
+//                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+//                MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+//
+//        ActivityCompat.requestPermissions(MainActivity.this,
+//                new String[]{Manifest.permission.ACCESS_FINE_LOCATION },
+//                MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION );
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -78,11 +81,6 @@ public class MainActivity extends FragmentActivity {
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                     Manifest.permission.READ_CONTACTS)) {
-
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
 
             } else {
 
@@ -92,9 +90,6 @@ public class MainActivity extends FragmentActivity {
                         new String[]{Manifest.permission.READ_CONTACTS},
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
 
@@ -107,22 +102,12 @@ public class MainActivity extends FragmentActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-
             } else {
-
-                // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions(MainActivity.this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
 
@@ -134,22 +119,13 @@ public class MainActivity extends FragmentActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-
             } else {
 
-                // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions(MainActivity.this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
 
@@ -163,22 +139,12 @@ public class MainActivity extends FragmentActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-
             } else {
-
-                // No explanation needed, we can request the permission.
 
                 ActivityCompat.requestPermissions(MainActivity.this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
 
@@ -190,22 +156,10 @@ public class MainActivity extends FragmentActivity {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 
-                // Show an expanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-
             } else {
-
-                // No explanation needed, we can request the permission.
-
                 ActivityCompat.requestPermissions(MainActivity.this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
 
@@ -235,7 +189,8 @@ public class MainActivity extends FragmentActivity {
 
                               try {
                                             JSONArray ja = response.getJSONObject().getJSONArray("data");
-                                            new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",ja.toString());
+                                            //new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",ja.toString());
+                                  new HttpConnectionThread().doInBackground("http://143.248.47.61:8000/",ja.toString());
 
                                         } catch (JSONException e) {
                                             e.printStackTrace();
@@ -279,22 +234,21 @@ public class MainActivity extends FragmentActivity {
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);
                 conn.setRequestMethod("POST");
+               // conn.setRequestProperty("Accept", "application/json");
+                conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
+                conn.setRequestProperty("Accept-Charset", "UTF-8");
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
-                Log.e("Hi","HHHHHHHHHHHHHHH");
+
                 conn.connect();
+
                 conn.getOutputStream();
                 OutputStream os =  conn.getOutputStream();
 
                 JSONArray jarray = null;
                 try {
                     jarray = new JSONArray(url[1]);
-                    int jlen = jarray.length();
-                    for(int i = 0; i < jlen; i++){
-                        JSONObject jso = jarray.getJSONObject(i);
-                        os.write(jso.toString().getBytes("UTF-8"));
-                        Log.e("friend",jso.toString());
-                    }
+                    os.write(jarray.toString().getBytes("UTF-8"));
                 } catch (JSONException e) {
                     Log.e("tt","Don/t do that");
                     e.printStackTrace();

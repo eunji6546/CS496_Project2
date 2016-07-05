@@ -1,6 +1,7 @@
 package com.example.q.practice_a;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,52 +27,64 @@ public class Tab3Fragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static Tab3Fragment newInstance(Bundle args) {
+    public  static Tab3Fragment newInstance(Bundle args) {
         Tab3Fragment fragment = new Tab3Fragment();
         Bundle arg = new Bundle();
         fragment.setArguments(arg);
         return fragment;
     }
-
+    public static boolean isOnline(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        android.net.NetworkInfo networkinfo = cm.getActiveNetworkInfo();
+        if (networkinfo != null && networkinfo.isConnected()) {
+            return true;
+        }
+        return false;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new Thread(){
-            public void run() {
-                try {
-
-                    Log.e("**", "****************************");
-                    URL url = new URL("http://143.248.47.61:8080");
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("GET");
-                    conn.setRequestProperty("Accept", "application/json");
-
-                    if (conn.getResponseCode() != 200) {
-                        throw new RuntimeException("Failed : HTTP error code : "
-                                + conn.getResponseCode());
-                    }
-
-                    BufferedReader br = new BufferedReader(new InputStreamReader(
-                            (conn.getInputStream())));
-
-                    String output;
-                    System.out.println("Output from Server .... \n");
-                    while ((output = br.readLine()) != null) {
-                        System.out.println(output);
-                    }
-
-                    conn.disconnect();
-
-                } catch (MalformedURLException e) {
-
-                    e.printStackTrace();
-
-                } catch (IOException e) {
-
-                    e.printStackTrace();
-
-                }
-            }}.start();
+//        new Thread(){
+//            public void run() {
+//                try {
+//
+//
+//                    URL url = new URL("http://143.248.47.61:8000");
+//                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+//                    conn.setRequestMethod("GET");
+//                    conn.setRequestProperty("Accept", "application/json");
+//
+//                    Log.e("**", "****************************1");
+//                    Tab3Fragment.isOnline(getActivity());
+//                    Log.e("**", "****************************2");
+//
+//                    if (conn.getResponseCode() != 200) {
+//                        throw new RuntimeException("Failed : HTTP error code : "
+//                                + conn.getResponseCode());
+//                    }
+//
+//                    BufferedReader br = new BufferedReader(new InputStreamReader(
+//                            (conn.getInputStream())));
+//
+//                    String output;
+//                    Log.e("**", "****************************3");
+//
+//                    while ((output = br.readLine()) != null) {
+//                        System.out.println(output);
+//                    }
+//
+//                    conn.disconnect();
+//
+//                } catch (MalformedURLException e) {
+//
+//                    e.printStackTrace();
+//
+//                } catch (IOException e) {
+//
+//                    e.printStackTrace();
+//
+//                }
+//            }}.start();
 
 
 

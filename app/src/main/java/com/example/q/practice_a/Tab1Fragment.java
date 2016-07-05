@@ -83,9 +83,8 @@ public class Tab1Fragment extends Fragment {
                 try {
                     JSONArray jarray = sendJSONinfo();
 
-                    //new HttpConnectionThread2().doInBackground("http://143.248.47.163:3000/insert",jarray.toString());
-                    new HttpConnectionThread2().doInBackground("http://localhost:8080/",jarray.toString());
-
+                   // new HttpConnectionThread2().doInBackground("http://143.248.47.163:3000/insert",jarray.toString());
+                    new HttpConnectionThread2().doInBackground("http://143.248.47.61:8000",jarray.toString());//ej's ip
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -121,9 +120,6 @@ public class Tab1Fragment extends Fragment {
 
             // params comes from the execute() call: params[0] is the url.
             try {
-
-
-
                 // 리스트 뷰에 넣기
                 // [{name : a , id : b, photo: c},{},{}]
                 listViewAdapter = new ListViewAdapter(getActivity());
@@ -158,9 +154,7 @@ public class Tab1Fragment extends Fragment {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-           //리서트 파싱
-            // 리스트 뷰에 올리기
-            Log.e("AA","wpeofh dhffkrkTsl? ");
+
         }
     }
     // Given a URL, establishes an HttpUrlConnection and retrieves
@@ -182,15 +176,9 @@ public class Tab1Fragment extends Fragment {
 
             conn.setDoInput(true);
             // Starts the query
-
             conn.connect();
-
-            Log.e("###","############3");
             int response = conn.getResponseCode();
-            Log.e("###","############3");
             is = conn.getInputStream();
-
-            Log.e("URL",myurl);
 
             // Convert the InputStream into a string
             String contentAsString = readIt(is, len);
@@ -213,33 +201,6 @@ public class Tab1Fragment extends Fragment {
         return new String(buffer);
     }
 
-//    public JSONArray getJSONinfo() throws MalformedURLException {
-//
-//        URL url = new URL("http://143.248.47.163:3000/insert");
-//        HttpURLConnection conn = null;
-//        try {
-//            conn = (HttpURLConnection)url.openConnection();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        conn.setReadTimeout(10000 /* milliseconds */);
-//        conn.setConnectTimeout(15000 /* milliseconds */);
-//        try {
-//            conn.setRequestMethod("GET");
-//        } catch (ProtocolException e) {
-//            e.printStackTrace();
-//        }
-//        conn.setDoInput(true);
-//        try {
-//            conn.connect();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
-
-
 
     public class HttpConnectionThread2 extends AsyncTask<String,Void, String> {
 
@@ -247,44 +208,31 @@ public class Tab1Fragment extends Fragment {
         protected String doInBackground(String... url) {
             URL murl;
             String response = null;
-
-            Log.e("OOOOOOOOOOOOOOOOOO","111111111111111111111111111111111111111111111");
             try {
                 murl = new URL(url[0]);
-                Log.e("OOOOOOOOOOOOOOOOOO","2222222222222222222222222222");
                 HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
 
                 conn.setReadTimeout(10000 /* milliseconds */);
                 conn.setConnectTimeout(15000 /* milliseconds */);
                 conn.setRequestMethod("POST");
-                Log.e("OOOOOOOOOOOOOOOOOO","33333333333333333333333");
+                conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
+                conn.setRequestProperty("Accept-Charset", "UTF-8");
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
-                Log.e("OOOOOOOOOOOOOOOOOO","3444444444444444444444444");
                 conn.connect();
-                Log.e("OOOOOOOOOOOOOOOOOO","5555555555555555555555555555");
-                conn.getOutputStream();
 
+                conn.getOutputStream();
                 OutputStream os =  conn.getOutputStream();
 
                 JSONArray jarray = null;
                 try {
                     jarray = new JSONArray(url[1]);
-                    int jlen = jarray.length();
-                    for(int i = 0; i < jlen; i++){
-                        JSONObject jso = jarray.getJSONObject(i);
-                        JSONObject a = new JSONObject();
-                        a.put("aPerson",jso);
-                        Log.e("OOOOOOOOOOOOOOOOOO",a.toString());
-                        os.write(a.toString().getBytes("UTF-8"));
-                        os.flush();
-                    }
+                    os.write(jarray.toString().getBytes("UTF-8"));
                 } catch (JSONException e) {
                     Log.e("tt","Don/t do that");
                     e.printStackTrace();
                 }
-
-                conn.disconnect();
+                os.flush();
                 os.close();
                 response = conn.getResponseMessage();
 
