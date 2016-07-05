@@ -168,11 +168,11 @@ public class MyActivity extends AppCompatActivity {
                 case 0:
                     return "친구";
                 case 1:
-                    return "SECTION 2";
+                    return "갤러리";
                 case 2:
-                    return "SECTION 3";
+                    return "게시판";
                 case 3:
-                    return "SECTION 3";
+                    return "개발자";
             }
             return null;
         }

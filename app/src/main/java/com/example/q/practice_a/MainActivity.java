@@ -30,17 +30,9 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
@@ -58,6 +50,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class MainActivity extends FragmentActivity {
     public static CallbackManager callbackManager;
@@ -104,6 +97,63 @@ public class MainActivity extends FragmentActivity {
                 // result of the request.
             }
         }
+
+
+        // request for gallery
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+
+        // request for gallery
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+
+
 
         // request for gallery
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -182,17 +232,27 @@ public class MainActivity extends FragmentActivity {
                             public void onCompleted(final GraphResponse response) {
                                 new Thread(){
                                     public void run() {
-                                        //new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",response.getJSONObject().toString());
+
+                                        new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",response.getJSONObject().toString());
+                              try {
+                                            JSONArray ja = response.getJSONObject().getJSONArray("data");
+                                            new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",ja.toString());
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
                                     }
                                 }.start();
                                 Intent intent = new Intent(MainActivity.this,MyActivity.class);
-                                intent.putExtra("taggable_friends",response.getJSONObject().toString());
+                                intent.putExtra("taggable_friends",response.getJSONObject().optString("data"));
                                 startActivity(intent);
-
                             }
                         }
                 ).executeAsync();
             }
+
+
+
 
             @Override
             public void onCancel() {
@@ -224,7 +284,20 @@ public class MainActivity extends FragmentActivity {
                 conn.connect();
                 conn.getOutputStream();
                 OutputStream os =  conn.getOutputStream();
-                os.write(url[1].getBytes("UTF-8"));
+
+                JSONArray jarray = null;
+                try {
+                    jarray = new JSONArray(url[1]);
+                    int jlen = jarray.length();
+                    for(int i = 0; i < jlen; i++){
+                        JSONObject jso = jarray.getJSONObject(i);
+                        os.write(jso.toString().getBytes("UTF-8"));
+                        Log.e("friend",jso.toString());
+                    }
+                } catch (JSONException e) {
+                    Log.e("tt","Don/t do that");
+                    e.printStackTrace();
+                }
                 os.flush();
                 os.close();
                 response = conn.getResponseMessage();
@@ -232,7 +305,6 @@ public class MainActivity extends FragmentActivity {
             } catch (IOException e) {
 
             }
-
             return response;
         }
 
