@@ -96,7 +96,7 @@ public class Tab1Fragment extends Fragment {
 
         new Thread() {
             public void run() {
-                new DownloadContactList().doInBackground("http://143.248.47.163:3000/list");
+                new DownloadContactList().doInBackground("http://143.248.47.61:8000/fbcontacts");
 
             }
         }.start();
@@ -172,8 +172,6 @@ public class Tab1Fragment extends Fragment {
             conn.setReadTimeout(10000 /* milliseconds */);
             conn.setConnectTimeout(15000 /* milliseconds */);
             conn.setRequestMethod("GET");
-
-            conn.setDoInput(true);
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
@@ -181,6 +179,7 @@ public class Tab1Fragment extends Fragment {
 
             // Convert the InputStream into a string
             String contentAsString = readIt(is, len);
+            Log.e("@@",contentAsString);
             return contentAsString;
 
             // Makes sure that the InputStream is closed after the app is
