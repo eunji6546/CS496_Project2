@@ -39,6 +39,7 @@ public class PostDetail extends AppCompatActivity {
         writerText.setText(writer);
         TextView contentsText = (TextView)findViewById(R.id.content);
         contentsText.setText(contents);
+
         if (modifybtn != null) {
             modifybtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -52,7 +53,7 @@ public class PostDetail extends AppCompatActivity {
                         intent.putExtra("contents", contents);
                         intent.putExtra("password", password);
                         intent.putExtra("keynum", keynum);
-                        startActivity(intent);
+                        startActivityForResult(intent,2);
                     } else {
                         Toast.makeText(getBaseContext(), "Wrong Password.", Toast.LENGTH_LONG).show();
                     }
@@ -80,7 +81,7 @@ public class PostDetail extends AppCompatActivity {
                             }
                         }.start();
 
-                        //finish();
+                        finish();
                     } else {
                         Toast.makeText(getBaseContext(), "Wrong Password.", Toast.LENGTH_LONG).show();
                     }
@@ -88,5 +89,12 @@ public class PostDetail extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode,int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        Toast.makeText(this, "쿄쿄쿄", Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

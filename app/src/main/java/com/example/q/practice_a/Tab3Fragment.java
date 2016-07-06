@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,7 +78,7 @@ public class Tab3Fragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), BulletinWirte.class);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         });
         // 서버로 부터 게시글 목록 받아오고, 리스트 뷰에 넣기
@@ -99,8 +100,7 @@ public class Tab3Fragment extends Fragment {
         String  pn;
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-           Intent intent = new Intent(getActivity(),PostDetail.class);
-//            Log.e("**","*************");
+           /*Intent intent = new Intent(getActivity(),PostDetail.class);
             OnePost mData = PostViewAdapter.mListPost.get(position);
             intent.putExtra("title",mData.mTitle);
             intent.putExtra("writer",mData.mWriter);
@@ -108,10 +108,25 @@ public class Tab3Fragment extends Fragment {
             intent.putExtra("password",mData.mPassword);
             intent.putExtra("keynum",mData.mKeyNum);
 
-            startActivity(intent);
+            startActivity(intent);*/
+            Intent intent = new Intent(Tab3Fragment.this.getActivity(),PostDetail.class);
+            OnePost mData = PostViewAdapter.mListPost.get(position);
+            intent.putExtra("title",mData.mTitle);
+            intent.putExtra("writer",mData.mWriter);
+            intent.putExtra("contents",mData.mContents);
+            intent.putExtra("password",mData.mPassword);
+            intent.putExtra("keynum",mData.mKeyNum);
 
+            startActivityForResult(intent,1);
         }
     }
+
+    @Override
+    public void onActivityResult(int requestCode,int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        //Toast.makeText(Tab3Fragment.this.getActivity(), "굳굳굳", Toast.LENGTH_SHORT).show();
+    }
+
     // Uses AsyncTask to create a task away from the main UI thread. This task takes a
     // URL string and uses it to create an HttpUrlConnection. Once the connection
     // has been established, the AsyncTask downloads the contents of the webpage as
@@ -132,11 +147,11 @@ public class Tab3Fragment extends Fragment {
                 // [{name : a , id : b, photo: c},{},{}]
 
                 try {
-                    Log.e("11","!!!!!11!!!!!1");
+                    //Log.e("11","!!!!!11!!!!!1");
                    // jsonArray = new JSONArray(new HttpGetResponse().execute(url[0])/*downloadUrl(url[0])*/);
                     jsonArray = new JSONArray(downloadUrl(url[0]));
-                    Log.e("222", String.valueOf(jsonArray.length()));
-                    Log.e("222", jsonArray.toString());
+                    //Log.e("222", String.valueOf(jsonArray.length()));
+                    //Log.e("222", jsonArray.toString());
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject one = jsonArray.getJSONObject(i);
                         String title;
@@ -170,7 +185,7 @@ public class Tab3Fragment extends Fragment {
         protected void onPostExecute(String result) {
 
             if (jsonArray.length() != 0){
-                Log.e("S","SDFASDFASDFASDFASDF");
+                //Log.e("S","SDFASDFASDFASDFASDF");
                 postListView.setAdapter(postViewAdapter);
                 ListViewExampleClickListener listViewExampleClickListener = new ListViewExampleClickListener();
                 postListView.setOnItemClickListener(listViewExampleClickListener);

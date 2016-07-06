@@ -62,18 +62,12 @@ public class ModifyDetail extends AppCompatActivity {
                                     jo.put("keynum",keynum);
                                     ja.put(jo);
                                     new HttpConnectionThread().execute("http://143.248.47.61:8000/update", ja.toString());
-                                    Intent intent = new Intent(getApplicationContext(),PostDetail.class);
-                                    intent.putExtra("title", title);
-                                    intent.putExtra("writer", writer);
-                                    intent.putExtra("contents", contents);
-                                    intent.putExtra("password", password);
-                                    intent.putExtra("keynum", keynum);
-                                    startActivity(intent);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
                         }.start();
+                        finish();
                     }
                     else {
                         Toast.makeText(getBaseContext(), "비밀번호가 틀렸습니다.",  Toast.LENGTH_LONG).show();
@@ -81,6 +75,5 @@ public class ModifyDetail extends AppCompatActivity {
                 }
             });
         }
-
     }
 }
