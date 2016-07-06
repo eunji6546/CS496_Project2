@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -82,7 +83,6 @@ public class Tab1Fragment extends Fragment {
             public void run() {
                 try {
                     JSONArray jarray = sendJSONinfo();
-                   // new HttpConnectionThread2().doInBackground("http://143.248.47.163:3000/insert",jarray.toString());
                     new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/insert/pb",jarray.toString());
 
                 } catch (JSONException e) {
@@ -97,7 +97,7 @@ public class Tab1Fragment extends Fragment {
         new Thread() {
             public void run() {
                 new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
-
+                new DownloadContactList().execute("http://143.248.47.56:1337/pbcontacts");
             }
         }.start();
 
@@ -113,8 +113,6 @@ public class Tab1Fragment extends Fragment {
 
      class DownloadContactList extends AsyncTask<String, Void, String> {
 
-
-
         protected String doInBackground(String... url) {
 
             // params comes from the execute() call: params[0] is the url.
@@ -123,33 +121,27 @@ public class Tab1Fragment extends Fragment {
                 // [{name : a , id : b, photo: c},{},{}]
                 listViewAdapter = new ListViewAdapter(getActivity());
                 try {
-                    Log.e("11","!!!!!11!!!!!1");
                     JSONArray jsonArray = new JSONArray(downloadUrl(url[0]));
-                    Log.e("222","@@@@@@@@@@@@@");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject one = jsonArray.getJSONObject(i);
                         String name;
                         String numberOremail;
                         String from;
-                        String photo; //url?
+                        String photo;
 
 
                         name = one.getString("name");
                         try {
-
-                            numberOremail = one.getString("numberOrEmail");
+                            numberOremail = one.getString("phonenumber");
                             from = "1";
+
                         }catch (JSONException e){
                             //페북연락처일때
                             numberOremail = "DO NOT HAVE NUMBER";
                             from = "0";
                         }
-
                         photo = one.getString("photo");
-                        Log.e("NAME",name);
-
                         listViewAdapter.addItem(photo, name, numberOremail, from);
-
                     }
 
 
@@ -165,7 +157,6 @@ public class Tab1Fragment extends Fragment {
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Log.e("S","SDFASDFASDFASDFASDF");
             contactListView.setAdapter(listViewAdapter);
             ListViewExampleClickListener listViewExampleClickListener = new ListViewExampleClickListener();
             contactListView.setOnItemClickListener(listViewExampleClickListener);
@@ -212,7 +203,6 @@ public class Tab1Fragment extends Fragment {
 
          return responseData;
 
-
             // Makes sure that the InputStream is closed after the app is
             // finished using it.
         } finally {
@@ -231,8 +221,6 @@ public class Tab1Fragment extends Fragment {
     }
 
     public JSONArray sendJSONinfo() throws JSONException {
-
-
 
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
 
@@ -267,13 +255,9 @@ public class Tab1Fragment extends Fragment {
 
                     Uri puri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactid);
                     InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, puri);
-                    if (input != null) {
-                        oneContact.put("profileuri", puri);
-                    } else {
-                        oneContact.put("profileuri", "NONE");
-                    }
-
+                    oneContact.put("photo", puri);
                     contactList.put(oneContact);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -289,13 +273,11 @@ public class Tab1Fragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(getActivity(), ContactDetail.class);
-            Log.e("**","*************");
             OneContact mData = ListViewAdapter.mListData.get(position);
             intent.putExtra("name",mData.mName);
             intent.putExtra("numberOrEmail",mData.mNumberOrEmail);
-            intent.putExtra("profilePhoto", (CharSequence) mData.mPhoto); //되나?
+            intent.putExtra("profilePhoto", (CharSequence) mData.mPhoto);
             intent.putExtra("from",mData.mFrom);
-            Log.e("**","*************");
             startActivity(intent);
 
 

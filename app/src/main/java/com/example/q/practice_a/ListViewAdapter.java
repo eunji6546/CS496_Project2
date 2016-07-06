@@ -1,7 +1,10 @@
 package com.example.q.practice_a;
 
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +13,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -51,26 +57,38 @@ public class ListViewAdapter extends BaseAdapter {
         }
         OneContact mData = mListData.get(position);
 
-        if (mData.mPhoto!=null){
-            new DownloadImageTask((ImageView) holder.mPhoto)
-                    .execute(mData.mPhoto);
-            //holder.mPhoto.setVisibility(View.VISIBLE);
-            //holder.mPhoto.setImageDrawable(mData.mPhoto);
-        }else {
-            // Default photo
-        }
+        Log.e("***",mData.mPhoto);
+//        if (mData.mPhoto!=null){
+//
+//            //holder.mPhoto.setVisibility(View.VISIBLE);
+//            //holder.mPhoto.setImageDrawable(mData.mPhoto);
+//        }else {
+//            // Default photo
+//        }
 
-        Log.e("))))))",mData.mFrom);
         if (mData.mFrom=="0" ){
             // from facebook
             holder.mContactType.setVisibility(View.VISIBLE);
             holder.mContactType.setImageResource(R.drawable.facebook_logo);
+            new DownloadImageTask((ImageView) holder.mPhoto).execute(mData.mPhoto);
         }else {
             //from phonebook
-
             holder.mContactType.setVisibility(View.VISIBLE);
-           // holder.mContactType.setImageDrawable(R.drawable.phonebook);
             holder.mContactType.setImageResource(R.drawable.phonebook);
+            InputStream input = null;
+
+            input = ContactsContract.Contacts.openContactPhotoInputStream(mContext.getContentResolver(), Uri.parse(mData.mPhoto));
+            if (input != null) {
+                holder.mPhoto.setImageBitmap( BitmapFactory.decodeStream(input));
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                holder.mPhoto.setImageResource(R.drawable.blank_user_profile);
+            }
         }
 
         //////////

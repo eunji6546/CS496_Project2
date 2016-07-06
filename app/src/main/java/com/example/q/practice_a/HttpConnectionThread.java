@@ -39,10 +39,8 @@ public class HttpConnectionThread extends AsyncTask<String,Void, String> {
             JSONArray jarray = null;
             try {
                 jarray = new JSONArray(url[1]);
-                //Log.e("POST",jarray.toString());
                 os.write(jarray.toString().getBytes("UTF-8"));
             } catch (JSONException e) {
-                Log.e("tt","Don/t do that");
                 e.printStackTrace();
             }
             os.flush();

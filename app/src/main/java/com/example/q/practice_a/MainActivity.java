@@ -186,12 +186,9 @@ public class MainActivity extends FragmentActivity {
                             public void onCompleted(final GraphResponse response) {
                                 new Thread(){
                                     public void run() {
-
                                         try {
                                             JSONArray ja = response.getJSONObject().getJSONArray("data");
-                                            //new HttpConnectionThread().doInBackground("http://143.248.47.163:3000/insert",ja.toString());
-                                            new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/",ja.toString());
-
+                                            new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/insert/fb",ja.toString());
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
