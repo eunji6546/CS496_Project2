@@ -150,17 +150,15 @@ public class MyActivity extends AppCompatActivity {
                     //return new Tab1Fragment();
                 case 1:
                     return Tab2Fragment.newInstance(args);
-                case 2:
+                default:
                     //return Tab3Fragment.newInstance(args);
                     return new Tab3Fragment();
-                default:
-                    return PlaceholderFragment.newInstance(position + 1);
             }
         }
 
         @Override
         public int getCount() {
-            return 4;
+            return 3;
         }
 
         @Override
@@ -172,8 +170,6 @@ public class MyActivity extends AppCompatActivity {
                     return "갤러리";
                 case 2:
                     return "게시판";
-                case 3:
-                    return "개발자";
             }
             return null;
         }

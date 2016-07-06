@@ -17,8 +17,18 @@
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="165dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="102dp" />
+
+    <ImageView
+        android:background="@drawable/mainicon"
+        android:layout_width="180sp"
+        android:layout_height="150sp"
+
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="41dp"
+        android:id="@+id/imageView3" />
 
 </RelativeLayout>

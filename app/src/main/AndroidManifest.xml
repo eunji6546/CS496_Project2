@@ -45,7 +45,15 @@
         <activity android:name=".ContactDetail" />
         <activity android:name=".BulletinWirte" />
         <activity android:name=".PostDetail" />
-        <activity android:name=".ModifyDetail"></activity>
+        <activity android:name=".ModifyDetail" />
+        <activity android:name=".Tab2_photolarge" />
+        <activity android:name=".humbnailDownloader" />
+        <activity android:name=".ThumbnailDownloader" />
+        <activity android:name=".ServerRequests" />
+        <activity android:name=".image_add" />
+        <activity android:name=".GetUserCallback" />
+        <activity android:name=".GalleryItem" />
+        <activity android:name=".FlickrFetchr"></activity>
     </application>
 
 </manifest>
