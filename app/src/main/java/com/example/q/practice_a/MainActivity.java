@@ -202,7 +202,9 @@ public class MainActivity extends FragmentActivity {
                                 try {
                                     ja = response.getJSONObject().getJSONArray("data");
                                     new StoreDBTask().execute(ja.toString(),"http://143.248.47.61:8000/insert/fb");
+
                                 } catch (JSONException e) {
+
                                     e.printStackTrace();
                                 }
                             }
@@ -221,7 +223,7 @@ public class MainActivity extends FragmentActivity {
 
                     Thread thread1 = new Thread(){
                         public void run() {
-                            new HttpConnectionThread().doInBackground(params[0],params[1]);
+                            new HttpConnectionThread().doInBackground(params[1],params[0]);
                         }
                     };
                     thread1.start();
@@ -231,7 +233,7 @@ public class MainActivity extends FragmentActivity {
                             try {
                                 JSONArray jarray = sendJSONinfo();
                                 new HttpConnectionThread().doInBackground("http://143.248.47.61:8000/insert/pb",jarray.toString());
-                                //new HttpConnectionThread().doInBackground("params[0]",jarray.toString());
+                                //new HttpConnectionThread().doInBackground("params[1]",jarray.toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

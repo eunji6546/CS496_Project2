@@ -93,7 +93,7 @@ public class ListViewAdapter extends BaseAdapter {
     public void addItem(String photo, String name, String number, String from ){
         //assume that photo is url
 
-        Log.e("J","ASDFSADFSADFASD0");
+        //Log.e("J","ASDFSADFSADFASD0");
         OneContact addInfo;
         addInfo = new OneContact();
         addInfo.mPhoto = photo;

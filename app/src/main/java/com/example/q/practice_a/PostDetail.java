@@ -32,7 +32,6 @@ public class PostDetail extends AppCompatActivity {
         password = i.getStringExtra("password");
         keynum = i.getStringExtra("keynum");
 
-
         TextView titleText = (TextView)findViewById(R.id.show_title);
         titleText.setText(title);
         TextView writerText = (TextView)findViewById(R.id.show_writer);
@@ -94,7 +93,7 @@ public class PostDetail extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode,int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
-        Toast.makeText(this, "쿄쿄쿄", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "쿄쿄쿄", Toast.LENGTH_SHORT).show();
         finish();
     }
 }
