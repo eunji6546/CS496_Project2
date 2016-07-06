@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ public class ContactDetail extends AppCompatActivity {
         if (from.equals("0")){
             Log.e("!!!","FACEBOOK");
             mFrom.setImageResource(R.drawable.facebook_logo);
+           // mNumberOrEmail.setVisibility(View.INVISIBLE);
         }else{
             Log.e("!!!","PHONEBOOK");
             mFrom.setImageResource(R.drawable.phonebook);
