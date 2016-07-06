@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class PostDetail extends AppCompatActivity {
@@ -21,53 +22,71 @@ public class PostDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
 
-        Button deletebtn = (Button)findViewById(R.id.deletebtn);
-        Button modifybtn = (Button)findViewById(R.id.modifybtn);
+        Button deletebtn = (Button) findViewById(R.id.deletebtn);
+        Button modifybtn = (Button) findViewById(R.id.modifybtn);
 
         Intent i = getIntent();
-        title  = i.getStringExtra("title");
+        title = i.getStringExtra("title");
         writer = i.getStringExtra("writer");
         contents = i.getStringExtra("contents");
         password = i.getStringExtra("password");
         keynum = i.getStringExtra("keynum");
 
+
+        TextView titleText = (TextView)findViewById(R.id.show_title);
+        titleText.setText(title);
+        TextView writerText = (TextView)findViewById(R.id.show_writer);
+        writerText.setText(writer);
+        TextView contentsText = (TextView)findViewById(R.id.content);
+        contentsText.setText(contents);
+        if (modifybtn != null) {
+            modifybtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EditText pw = (EditText) findViewById(R.id.pw2);
+                    if (pw.getText().toString().equals(password)) {
+                        Toast.makeText(getBaseContext(), "수정페이지로 이동합니다.", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getApplicationContext(), ModifyDetail.class);
+                        intent.putExtra("title", title);
+                        intent.putExtra("writer", writer);
+                        intent.putExtra("contents", contents);
+                        intent.putExtra("password", password);
+                        intent.putExtra("keynum", keynum);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getBaseContext(), "Wrong Password.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+
         if (deletebtn != null) {
             deletebtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getBaseContext(), "정말로 지우고 싶으시면, 길게 눌러주세요.",  Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "정말로 지우고 싶으시면, 길게 눌러주세요.", Toast.LENGTH_SHORT).show();
                 }
             });
             deletebtn.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
-                    EditText pw = (EditText)findViewById(R.id.pw2);
-                    Log.e("password",password);
-                    Log.e("password",pw.getText().toString());
-                    if (pw.getText().toString().equals(password)){
-                        Toast.makeText(getBaseContext(), "삭제합니다.",  Toast.LENGTH_LONG).show();
-                        new Thread(){
+                    EditText pw = (EditText) findViewById(R.id.pw2);
+                    if (pw.getText().toString().equals(password)) {
+                        Toast.makeText(getBaseContext(), "삭제합니다.", Toast.LENGTH_LONG).show();
+                        new Thread() {
                             public void run() {
                                 //new HttpDeleteRequest().doInBackground("http://143.248.47.61:8000/delete?keynum=\"" + keynum + "\"");
-                                new HttpDeleteRequest().doInBackground("http://143.248.47.61:8000/delete",keynum);
+                                new HttpDeleteRequest().doInBackground("http://143.248.47.61:8000/delete", keynum);
                             }
                         }.start();
 
                         //finish();
+                    } else {
+                        Toast.makeText(getBaseContext(), "Wrong Password.", Toast.LENGTH_LONG).show();
                     }
-                    else {
-                        Toast.makeText(getBaseContext(), "Wrong Password.",  Toast.LENGTH_LONG).show();
-                    }
-
-                    return true;
+                    return false;
                 }
             });
         }
-
-        // 삭제 구현은
-        // 입력칸 하나 만들어서 거기 비번이랑 저기 인텐트에서 가져온 비번이랑 다르면 그냥 토스트 띄우고 아무것도 안하고
-        // 맞으면 http request 를 POST로 보내고,
-        // ~~~.~~~.~~~:~~~/deletpost?keynum="##" 으로 보내기
-        // ## 이 저 키넘버
     }
 }

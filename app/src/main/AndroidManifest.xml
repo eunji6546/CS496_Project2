@@ -43,10 +43,9 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </activity>
         <activity android:name=".ContactDetail" />
-
         <activity android:name=".BulletinWirte" />
-        <activity android:name=".PostDetail"></activity>
-
+        <activity android:name=".PostDetail" />
+        <activity android:name=".ModifyDetail"></activity>
     </application>
 
 </manifest>

@@ -89,9 +89,6 @@ public class Tab3Fragment extends Fragment {
         return rootview;
     }
 
-
-
-
     public interface OnFragmentInteractionListener
     {
         // TODO: Update argument type and name

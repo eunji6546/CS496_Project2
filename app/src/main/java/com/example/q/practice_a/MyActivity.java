@@ -175,5 +175,9 @@ public class MyActivity extends AppCompatActivity {
             }
             return null;
         }
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }//////이거 수정했음
     }
 }
