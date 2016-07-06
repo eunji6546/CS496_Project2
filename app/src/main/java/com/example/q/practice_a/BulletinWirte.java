@@ -56,11 +56,12 @@ public class BulletinWirte extends AppCompatActivity {
                             JSONArray ja = new JSONArray();
                             try {
                                 jo.put("pw",pw.getText().toString());
-                                jo.put("name",name.getText().toString());
+                                jo.put("writer",name.getText().toString());
                                 jo.put("title",title.getText().toString());
-                                jo.put("text",text.getText().toString());
+                                jo.put("contents",text.getText().toString());
                                 ja.put(jo);
-                                new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/postlist", ja.toString());
+                                Log.e("THIS",ja.toString());
+                                new HttpConnectionThread().execute("http://143.248.47.61:8000/writepost", ja.toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

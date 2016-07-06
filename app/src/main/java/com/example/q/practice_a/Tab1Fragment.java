@@ -51,7 +51,6 @@ public class Tab1Fragment extends Fragment {
     ListViewAdapter listViewAdapter;
     JSONObject object;
     JSONArray contactList;
-    String getResponse;
 
     public Tab1Fragment() {
         // Required empty public constructor
