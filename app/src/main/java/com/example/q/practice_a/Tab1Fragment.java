@@ -80,7 +80,7 @@ public class Tab1Fragment extends Fragment {
             }
         }.start();*/
         new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
-        new DownloadContactList().execute("http://143.248.47.56:1337/pbcontacts");
+        new DownloadContactList().execute("http://143.248.47.61:8000/pbcontacts");
         return rootView;
     }
 

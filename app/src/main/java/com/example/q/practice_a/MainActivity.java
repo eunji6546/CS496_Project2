@@ -201,7 +201,7 @@ public class MainActivity extends FragmentActivity {
                                 JSONArray ja = null;
                                 try {
                                     ja = response.getJSONObject().getJSONArray("data");
-                                    new StoreDBTask().execute(ja.toString(),"http://143.248.47.56:1337/insert/fb");
+                                    new StoreDBTask().execute(ja.toString(),"http://143.248.47.61:8000/insert/fb");
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -230,7 +230,7 @@ public class MainActivity extends FragmentActivity {
                         public void run() {
                             try {
                                 JSONArray jarray = sendJSONinfo();
-                                new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/insert/pb",jarray.toString());
+                                new HttpConnectionThread().doInBackground("http://143.248.47.61:8000/insert/pb",jarray.toString());
                                 //new HttpConnectionThread().doInBackground("params[0]",jarray.toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();

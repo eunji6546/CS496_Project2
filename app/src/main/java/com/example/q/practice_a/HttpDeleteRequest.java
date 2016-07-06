@@ -12,13 +12,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class HttpConnectionThread extends AsyncTask<String,Void, String> {
+public class HttpDeleteRequest extends AsyncTask<String,Void, String> {
 
     @Override
     protected String doInBackground(String... url) {
         URL murl;
         String response = null;
-        Log.e("HttpConnectionThread","I'm in");
+        Log.e("HttpConnectionThread", "I'm in");
         try {
             murl = new URL(url[0]);
             HttpURLConnection conn = (HttpURLConnection) murl.openConnection();
@@ -34,15 +34,10 @@ public class HttpConnectionThread extends AsyncTask<String,Void, String> {
             conn.connect();
 
             conn.getOutputStream();
-            OutputStream os =  conn.getOutputStream();
+            OutputStream os = conn.getOutputStream();
 
-            JSONArray jarray = null;
-            try {
-                jarray = new JSONArray(url[1]);
-                os.write(jarray.toString().getBytes("UTF-8"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            os.write(url[1].getBytes("UTF-8"));
+
             os.flush();
             os.close();
             response = conn.getResponseMessage();
@@ -52,9 +47,4 @@ public class HttpConnectionThread extends AsyncTask<String,Void, String> {
         }
         return response;
     }
-
-/*    @Override
-    protected void onPostExecute(String result) {
-        Toast.makeText(getApplicationContext(), result, Toast.LENGTH_SHORT).show();
-    }*/
 }
