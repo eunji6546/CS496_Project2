@@ -26,6 +26,8 @@ public class ContactDetail extends AppCompatActivity {
         String from = i.getStringExtra("from");
 
 
+        Log.e("000",photo );
+
 
         mNumberOrEmail = (TextView) findViewById(R.id.textView3);
         mNumberOrEmail.setText(pn);
@@ -43,7 +45,7 @@ public class ContactDetail extends AppCompatActivity {
         if (from.equals("0")){
             Log.e("!!!","FACEBOOK");
             mFrom.setImageResource(R.drawable.facebook_logo);
-           // mNumberOrEmail.setVisibility(View.INVISIBLE);
+            mNumberOrEmail.setVisibility(View.INVISIBLE);
         }else{
             Log.e("!!!","PHONEBOOK");
             mFrom.setImageResource(R.drawable.phonebook);
