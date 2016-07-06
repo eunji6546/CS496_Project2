@@ -25,6 +25,7 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -42,7 +43,9 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </activity>
         <activity android:name=".ContactDetail" />
-        <activity android:name=".BulletinWirte"/>
+
+        <activity android:name=".BulletinWirte" />
+        <activity android:name=".PostDetail"></activity>
 
     </application>
 

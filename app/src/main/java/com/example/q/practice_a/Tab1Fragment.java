@@ -48,6 +48,7 @@ import java.util.Iterator;
 public class Tab1Fragment extends Fragment {
     ListView contactListView;
     ListViewAdapter listViewAdapter;
+
     public Tab1Fragment() {
         // Required empty public constructor
     }
@@ -113,7 +114,6 @@ public class Tab1Fragment extends Fragment {
                             from = "0";
                         }
                         photo = one.getString("photo");
-                        listViewAdapter.addItem(photo, name, numberOremail, from);
                         listViewAdapter.addItem(photo, name, numberOremail, from);
                     }
 
