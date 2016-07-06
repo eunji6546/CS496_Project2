@@ -17,11 +17,12 @@ import java.util.ArrayList;
 public class PostViewAdapter extends BaseAdapter {
 
     private Context mContext = null;
-    public static ArrayList<OnePost> mListPost = new ArrayList<>();
+    public static ArrayList<OnePost> mListPost= null ;
 
     public  PostViewAdapter(Context context){
         super();
         this.mContext = context;
+        this.mListPost = new ArrayList<>();
     }
     @Override
     public int getCount() {

@@ -22,11 +22,12 @@ import java.util.ArrayList;
 
 public class ListViewAdapter extends BaseAdapter {
     private Context mContext = null;
-    public static ArrayList<OneContact> mListData = new ArrayList<>();
+    public static ArrayList<OneContact> mListData = null;
 
     public ListViewAdapter(Context context){
         super();
         this.mContext = context;
+        this.mListData = new ArrayList<>();
     }
     @Override
     public int getCount() {return mListData.size();}
@@ -59,7 +60,7 @@ public class ListViewAdapter extends BaseAdapter {
         if (mData.mFrom=="0" ){
             // from facebook
             holder.mContactType.setVisibility(View.VISIBLE);
-            holder.mContactType.setImageResource(R.drawable.facebook_logo);
+            holder.mContactType.setImageResource(R.drawable.facebooklogo);
             new DownloadImageTask((ImageView) holder.mPhoto).execute(mData.mPhoto);
         }else {
             //from phonebook
@@ -93,7 +94,6 @@ public class ListViewAdapter extends BaseAdapter {
     public void addItem(String photo, String name, String number, String from ){
         //assume that photo is url
 
-        //Log.e("J","ASDFSADFSADFASD0");
         OneContact addInfo;
         addInfo = new OneContact();
         addInfo.mPhoto = photo;

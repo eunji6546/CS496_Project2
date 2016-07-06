@@ -35,19 +35,12 @@ public class HttpGetResponse extends AsyncTask<String,Void, String> {
 
             conn.connect();
 
-            int response = conn.getResponseCode();
             is = conn.getInputStream();
 
-//            // Convert the InputStream into a string
-//            String contentAsString = readIt(is, len);
-//           // Log.e("@@",contentAsString);
-//            return contentAsString;
             BufferedReader in = new BufferedReader(
                     new InputStreamReader(conn.getInputStream())
             );
 
-            JSONArray jsonResponse = null;
-            //initiate strings to hold response data
             String inputLine;
 
             //read the InputStream with the BufferedReader line by line and add each line to responseData

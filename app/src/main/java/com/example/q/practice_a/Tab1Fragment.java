@@ -69,12 +69,24 @@ public class Tab1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         final View rootView = inflater.inflate(R.layout.fragment_tab1, container, false);
 
         contactListView = (ListView)rootView.findViewById(R.id.contactList);
+////
+//        listViewAdapter = new ListViewAdapter(getActivity());
+//        contactListView.setAdapter(listViewAdapter);
 
-        new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
-        new DownloadContactList().execute("http://143.248.47.61:8000/pbcontacts");
+        /*new Thread() {
+            public void run() {
+                new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
+                new DownloadContactList().execute("http://143.248.47.56:1337/pbcontacts");
+            }
+//        }.start();*/
+
+        new DownloadContactList().execute("http://143.248.47.61:8000/pbcontacts","http://143.248.47.61:8000/fbcontacts");
+       // new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
         return rootView;
     }
 
@@ -88,7 +100,11 @@ public class Tab1Fragment extends Fragment {
                 // [{name : a , id : b, photo: c},{},{}]
                 listViewAdapter = new ListViewAdapter(getActivity());
                 try {
-                    JSONArray jsonArray = new JSONArray(downloadUrl(url[0]));
+                    JSONArray jsonArray0 = new JSONArray(downloadUrl(url[0]));
+                    JSONArray jsonArray1 = new JSONArray(downloadUrl(url[1]));
+                    JSONArray jsonArray = new JSONArray(jsonArray0.toString().replace("]",",")+jsonArray1.toString().replace("[",""));
+                    Log.e("!!",jsonArray.toString());
+
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject one = jsonArray.getJSONObject(i);
                         String name;
@@ -104,7 +120,7 @@ public class Tab1Fragment extends Fragment {
 
                         }catch (JSONException e){
                             //페북연락처일때
-                            numberOremail = "DO NOT HAVE NUMBER";
+                            numberOremail = "";
                             from = "0";
                         }
                         photo = one.getString("photo");
@@ -148,18 +164,12 @@ public class Tab1Fragment extends Fragment {
             conn.setRequestMethod("GET");
             // Starts the query
             conn.connect();
-            int response = conn.getResponseCode();
             is = conn.getInputStream();
 
-//            // Convert the InputStream into a string
-//            String contentAsString = readIt(is, len);
-//           // Log.e("@@",contentAsString);
-//            return contentAsString;
             BufferedReader in = new BufferedReader(
                     new InputStreamReader ( conn.getInputStream() )
             );
 
-            JSONArray jsonResponse = null;
             //initiate strings to hold response data
             String inputLine;
             String responseData = "";
@@ -190,7 +200,7 @@ public class Tab1Fragment extends Fragment {
 
 
     public class ListViewExampleClickListener implements AdapterView.OnItemClickListener{
-        String  pn;
+
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(getActivity(), ContactDetail.class);

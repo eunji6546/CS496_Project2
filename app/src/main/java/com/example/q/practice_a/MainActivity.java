@@ -75,17 +75,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        ActivityCompat.requestPermissions(MainActivity.this,
-//                new String[]{Manifest.permission.READ_CONTACTS},
-//                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-//        ActivityCompat.requestPermissions(MainActivity.this,
-//                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-//                MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
-//
-//        ActivityCompat.requestPermissions(MainActivity.this,
-//                new String[]{Manifest.permission.ACCESS_FINE_LOCATION },
-//                MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION );
-
 
         FacebookSdk.sdkInitialize(getApplicationContext()); //SDK 초기화
         setContentView(R.layout.activity_main);
@@ -177,10 +166,6 @@ public class MainActivity extends FragmentActivity {
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             }
         }
-/*
-        FacebookSdk.sdkInitialize(getApplicationContext()); //SDK 초기화
-        setContentView(R.layout.activity_main);*/
-
         callbackManager = CallbackManager.Factory.create(); //로그인 응답을 처리할 콜백 관리자 생성
         LoginManager.getInstance().logOut();
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -202,9 +187,7 @@ public class MainActivity extends FragmentActivity {
                                 try {
                                     ja = response.getJSONObject().getJSONArray("data");
                                     new StoreDBTask().execute(ja.toString(),"http://143.248.47.61:8000/insert/fb");
-
                                 } catch (JSONException e) {
-
                                     e.printStackTrace();
                                 }
                             }
@@ -233,7 +216,7 @@ public class MainActivity extends FragmentActivity {
                             try {
                                 JSONArray jarray = sendJSONinfo();
                                 new HttpConnectionThread().doInBackground("http://143.248.47.61:8000/insert/pb",jarray.toString());
-                                //new HttpConnectionThread().doInBackground("params[1]",jarray.toString());
+                                //new HttpConnectionThread().doInBackground("params[0]",jarray.toString());
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -293,7 +276,6 @@ public class MainActivity extends FragmentActivity {
                     oneContact.put("name", contactCursor.getString(1));
                     oneContact.put("phonenumber", contactCursor.getString(0));
                     ContentResolver cr = this.getContentResolver();
-                    int contactId_idx = contactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID);
                     Long contactid = contactCursor.getLong(3);
 
                     Uri puri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactid);

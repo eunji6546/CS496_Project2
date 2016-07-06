@@ -60,7 +60,7 @@ public class ContactDetail extends AppCompatActivity {
         mFrom = (ImageView)findViewById(R.id.imageView2);
 
         if (from.equals("0")){
-            mFrom.setImageResource(R.drawable.facebook_logo);
+            mFrom.setImageResource(R.drawable.facebooklogo);
             mNumberOrEmail.setVisibility(View.INVISIBLE);
         }else{
             mFrom.setImageResource(R.drawable.phonebook);

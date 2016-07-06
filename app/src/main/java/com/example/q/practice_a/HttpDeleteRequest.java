@@ -18,7 +18,6 @@ public class HttpDeleteRequest extends AsyncTask<String,Void, String> {
     protected String doInBackground(String... url) {
         URL murl;
         String response = null;
-        Log.e("HttpConnectionThread", "I'm in");
         try {
             murl = new URL(url[0]);
             HttpURLConnection conn = (HttpURLConnection) murl.openConnection();

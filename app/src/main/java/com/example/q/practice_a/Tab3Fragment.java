@@ -82,11 +82,11 @@ public class Tab3Fragment extends Fragment {
             }
         });
         // 서버로 부터 게시글 목록 받아오고, 리스트 뷰에 넣기
-        /*new Thread() {
+        new Thread() {
             public void run() {
                 new DownloadPostList().execute("http://143.248.47.61:8000/postlist");
             }
-        }.start();*/
+        }.start();
         return rootview;
     }
 
@@ -129,7 +129,7 @@ public class Tab3Fragment extends Fragment {
                 new DownloadPostList().execute("http://143.248.47.61:8000/postlist");
             }
         }.start();
-        //Toast.makeText(Tab3Fragment.this.getActivity(), "굳굳굳", Toast.LENGTH_SHORT).show();
+
     }
 
     // Uses AsyncTask to create a task away from the main UI thread. This task takes a

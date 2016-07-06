@@ -93,7 +93,6 @@ public class PostDetail extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode,int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
-        //Toast.makeText(this, "쿄쿄쿄", Toast.LENGTH_SHORT).show();
         finish();
     }
 }
