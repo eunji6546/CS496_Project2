@@ -58,11 +58,11 @@ public class Tab3Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new Thread() {
+        /*new Thread() {
             public void run() {
                 new DownloadPostList().execute("http://143.248.47.61:8000/postlist");
             }
-        }.start();
+        }.start();*/
     }
 
     @Override
@@ -124,6 +124,11 @@ public class Tab3Fragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode,int resultCode, Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
+        new Thread() {
+            public void run() {
+                new DownloadPostList().execute("http://143.248.47.61:8000/postlist");
+            }
+        }.start();
         //Toast.makeText(Tab3Fragment.this.getActivity(), "굳굳굳", Toast.LENGTH_SHORT).show();
     }
 
@@ -137,8 +142,6 @@ public class Tab3Fragment extends Fragment {
 
         JSONArray jsonArray;
 
-
-
         protected String doInBackground(String... url) {
             postViewAdapter = new PostViewAdapter(getActivity());
             // params comes from the execute() call: params[0] is the url.
@@ -147,11 +150,8 @@ public class Tab3Fragment extends Fragment {
                 // [{name : a , id : b, photo: c},{},{}]
 
                 try {
-                    //Log.e("11","!!!!!11!!!!!1");
                    // jsonArray = new JSONArray(new HttpGetResponse().execute(url[0])/*downloadUrl(url[0])*/);
                     jsonArray = new JSONArray(downloadUrl(url[0]));
-                    //Log.e("222", String.valueOf(jsonArray.length()));
-                    //Log.e("222", jsonArray.toString());
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject one = jsonArray.getJSONObject(i);
                         String title;
@@ -185,7 +185,6 @@ public class Tab3Fragment extends Fragment {
         protected void onPostExecute(String result) {
 
             if (jsonArray.length() != 0){
-                //Log.e("S","SDFASDFASDFASDFASDF");
                 postListView.setAdapter(postViewAdapter);
                 ListViewExampleClickListener listViewExampleClickListener = new ListViewExampleClickListener();
                 postListView.setOnItemClickListener(listViewExampleClickListener);
