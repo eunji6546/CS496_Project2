@@ -27,7 +27,7 @@ public class PostDetail extends AppCompatActivity {
         // 입력칸 하나 만들어서 거기 비번이랑 저기 인텐트에서 가져온 비번이랑 다르면 그냥 토스트 띄우고 아무것도 안하고
         // 맞으면 http request 를 POST로 보내고,
         // ~~~.~~~.~~~:~~~/deletpost?keynum="##" 으로 보내기
-        // ## 이 저 키넘버 
+        // ## 이 저 키넘버
 
     }
 }
