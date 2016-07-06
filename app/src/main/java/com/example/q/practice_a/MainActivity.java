@@ -1,13 +1,18 @@
 package com.example.q.practice_a;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -59,6 +64,10 @@ import java.util.Iterator;
 public class MainActivity extends FragmentActivity {
     public static CallbackManager callbackManager;
     public static Thread thread1;
+    JSONObject object;
+    JSONArray contactList;
+    String getResponse;
+    ListViewAdapter listViewAdapter;
     int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 201;
     int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 201;
     int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 201;
@@ -182,7 +191,6 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Toast.makeText(getApplicationContext(), "Login Succeed~!!", Toast.LENGTH_SHORT).show();
-
                 new GraphRequest(
                         AccessToken.getCurrentAccessToken(),
                         "/me/taggable_friends",
@@ -190,26 +198,59 @@ public class MainActivity extends FragmentActivity {
                         HttpMethod.GET,
                         new GraphRequest.Callback() {
                             public void onCompleted(final GraphResponse response) {
-                                thread1 = new Thread(){
-                                    public void run() {
-                                        try {
-                                            JSONArray ja = response.getJSONObject().getJSONArray("data");
-                                            new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/insert/fb",ja.toString());
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                };
-                                thread1.start();
-                                Intent intent = new Intent(MainActivity.this,MyActivity.class);
-                                intent.putExtra("taggable_friends",response.getJSONObject().optString("data"));
-                                startActivity(intent);
+                                JSONArray ja = null;
+                                try {
+                                    ja = response.getJSONObject().getJSONArray("data");
+                                    new StoreDBTask().execute(ja.toString(),"http://143.248.47.56:1337/insert/fb");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                 ).executeAsync();
             }
 
-            @Override
+            class StoreDBTask extends AsyncTask<String, Void, String>  {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
+                }
+
+                @Override
+                protected String doInBackground(final String... params) {
+
+                    Thread thread1 = new Thread(){
+                        public void run() {
+                            new HttpConnectionThread().doInBackground(params[0],params[1]);
+                        }
+                    };
+                    thread1.start();
+
+                    Thread thread2 = new Thread(){
+                        public void run() {
+                            try {
+                                JSONArray jarray = sendJSONinfo();
+                                new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/insert/pb",jarray.toString());
+                                //new HttpConnectionThread().doInBackground("params[0]",jarray.toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    thread2.start();
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(String result) {
+                    super.onPostExecute(result);
+                    Intent intent = new Intent(MainActivity.this,MyActivity.class);
+                    startActivity(intent);
+
+                }
+            }
+
+                @Override
             public void onCancel() {
                 Toast.makeText(MainActivity.this, "로그인을 취소 하였습니다!", Toast.LENGTH_SHORT).show();
             }
@@ -220,7 +261,53 @@ public class MainActivity extends FragmentActivity {
             }
         });
     }
+    public JSONArray sendJSONinfo() throws JSONException {
 
+        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+
+        String[] projection = new String[] {
+                ContactsContract.CommonDataKinds.Phone.NUMBER,
+                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
+                ContactsContract.CommonDataKinds.Phone.PHOTO_ID,
+                ContactsContract.Data.CONTACT_ID
+        };
+
+        String[] selectionArgs = null;
+
+        String sortOrder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
+        Cursor contactCursor = this.getContentResolver().query(uri,projection,null,selectionArgs, sortOrder);
+        //Cursor contactCursor = managedQuery(uri,null,null,selectionArgs, sortOrder);
+
+
+        object = new JSONObject();
+        contactList = new JSONArray();
+        listViewAdapter = new ListViewAdapter(this);
+        JSONObject oneContact;
+
+        if (contactCursor.moveToFirst()) {
+            do {
+                try {
+                    oneContact = new JSONObject();
+                    oneContact.put("name", contactCursor.getString(1));
+                    oneContact.put("phonenumber", contactCursor.getString(0));
+                    ContentResolver cr = this.getContentResolver();
+                    int contactId_idx = contactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID);
+                    Long contactid = contactCursor.getLong(3);
+
+                    Uri puri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactid);
+                    InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, puri);
+                    oneContact.put("photo", puri);
+                    contactList.put(oneContact);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            } while (contactCursor.moveToNext());
+
+        }
+        return contactList;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         super.onActivityResult(requestCode, resultCode, data);

@@ -38,6 +38,7 @@ public class BulletinWirte extends AppCompatActivity {
                 public boolean onLongClick(View v) {
                     // TODO Auto-generated method stub
                     Toast.makeText(getBaseContext(), "삭제합니다.",  Toast.LENGTH_LONG).show();
+                    finish();
                     return true;
                 }
             });

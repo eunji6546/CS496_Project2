@@ -46,14 +46,8 @@ import java.util.Iterator;
 
 
 public class Tab1Fragment extends Fragment {
-
-
     ListView contactListView;
     ListViewAdapter listViewAdapter;
-    JSONObject object;
-    JSONArray contactList;
-    String getResponse;
-
     public Tab1Fragment() {
         // Required empty public constructor
     }
@@ -78,45 +72,16 @@ public class Tab1Fragment extends Fragment {
 
         contactListView = (ListView)rootView.findViewById(R.id.contactList);
 
-
-        // 휴대폰 연락처 보내기
-        Thread thread2 = new Thread(){
-            public void run() {
-                try {
-                    JSONArray jarray = sendJSONinfo();
-                    new HttpConnectionThread().doInBackground("http://143.248.47.56:1337/insert/pb",jarray.toString());
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        thread2.start();
-        // Inflate the layout for this fragment
-
-        // 서버에서 받아서 리스트 뷰에 넣기
-
-        try {
-            thread2.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        new Thread() {
+        /*new Thread() {
             public void run() {
                 new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
                 new DownloadContactList().execute("http://143.248.47.56:1337/pbcontacts");
             }
-        }.start();
-
-
+        }.start();*/
+        new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
+        new DownloadContactList().execute("http://143.248.47.56:1337/pbcontacts");
         return rootView;
     }
-
-    // Uses AsyncTask to create a task away from the main UI thread. This task takes a
-    // URL string and uses it to create an HttpUrlConnection. Once the connection
-    // has been established, the AsyncTask downloads the contents of the webpage as
-    // an InputStream. Finally, the InputStream is converted into a string, which is
-    // displayed in the UI by the AsyncTask's onPostExecute method.
 
      class DownloadContactList extends AsyncTask<String, Void, String> {
 
@@ -148,6 +113,7 @@ public class Tab1Fragment extends Fragment {
                             from = "0";
                         }
                         photo = one.getString("photo");
+                        listViewAdapter.addItem(photo, name, numberOremail, from);
                         listViewAdapter.addItem(photo, name, numberOremail, from);
                     }
 
@@ -227,53 +193,7 @@ public class Tab1Fragment extends Fragment {
         return new String(buffer);
     }
 
-    public JSONArray sendJSONinfo() throws JSONException {
 
-        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-
-        String[] projection = new String[] {
-                ContactsContract.CommonDataKinds.Phone.NUMBER,
-                ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME,
-                ContactsContract.CommonDataKinds.Phone.PHOTO_ID,
-                ContactsContract.Data.CONTACT_ID
-        };
-
-        String[] selectionArgs = null;
-
-        String sortOrder = ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME + " COLLATE LOCALIZED ASC";
-        Cursor contactCursor = getActivity().getContentResolver().query(uri,projection,null,selectionArgs, sortOrder);
-        //Cursor contactCursor = managedQuery(uri,null,null,selectionArgs, sortOrder);
-
-
-        object = new JSONObject();
-        contactList = new JSONArray();
-        listViewAdapter = new ListViewAdapter(getActivity());
-        JSONObject oneContact;
-
-        if (contactCursor.moveToFirst()) {
-            do {
-                try {
-                    oneContact = new JSONObject();
-                    oneContact.put("name", contactCursor.getString(1));
-                    oneContact.put("phonenumber", contactCursor.getString(0));
-                    ContentResolver cr = getActivity().getContentResolver();
-                    int contactId_idx = contactCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.CONTACT_ID);
-                    Long contactid = contactCursor.getLong(3);
-
-                    Uri puri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI, contactid);
-                    InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(cr, puri);
-                    oneContact.put("photo", puri);
-                    contactList.put(oneContact);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            } while (contactCursor.moveToNext());
-
-        }
-        return contactList;
-     }
 
     public class ListViewExampleClickListener implements AdapterView.OnItemClickListener{
         String  pn;

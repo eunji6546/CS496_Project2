@@ -50,21 +50,11 @@ public class ListViewAdapter extends BaseAdapter {
             holder.mNumberOrEmail = (TextView) convertView.findViewById(R.id.mNumberOrEmail);
             holder.mContactType = (ImageView)convertView.findViewById(R.id.mContactType);
             convertView.setTag(holder);
-            Log.e("@@@",holder.mNumberOrEmail.toString());
 
         }else {
             holder = (ViewHolder) convertView.getTag();
         }
         OneContact mData = mListData.get(position);
-
-        Log.e("***",mData.mPhoto);
-//        if (mData.mPhoto!=null){
-//
-//            //holder.mPhoto.setVisibility(View.VISIBLE);
-//            //holder.mPhoto.setImageDrawable(mData.mPhoto);
-//        }else {
-//            // Default photo
-//        }
 
         if (mData.mFrom=="0" ){
             // from facebook
