@@ -146,11 +146,13 @@ public class MyActivity extends AppCompatActivity {
 
             switch (position){
                 case 0:
-                    return Tab1Fragment.newInstance(args);
+                    //return Tab1Fragment.newInstance(args);
+                    return new Tab1Fragment();
                 case 1:
                     return Tab2Fragment.newInstance(args);
                 case 2:
-                    return Tab3Fragment.newInstance(args);
+                    //return Tab3Fragment.newInstance(args);
+                    return new Tab3Fragment();
                 default:
                     return PlaceholderFragment.newInstance(position + 1);
             }

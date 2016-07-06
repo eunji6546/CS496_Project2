@@ -22,11 +22,12 @@ import java.util.ArrayList;
 
 public class ListViewAdapter extends BaseAdapter {
     private Context mContext = null;
-    public static ArrayList<OneContact> mListData = new ArrayList<>();
+    public static ArrayList<OneContact> mListData = null;
 
     public ListViewAdapter(Context context){
         super();
         this.mContext = context;
+        this.mListData = new ArrayList<>();
     }
     @Override
     public int getCount() {return mListData.size();}

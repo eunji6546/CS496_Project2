@@ -69,18 +69,24 @@ public class Tab1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         final View rootView = inflater.inflate(R.layout.fragment_tab1, container, false);
 
         contactListView = (ListView)rootView.findViewById(R.id.contactList);
+////
+//        listViewAdapter = new ListViewAdapter(getActivity());
+//        contactListView.setAdapter(listViewAdapter);
 
         /*new Thread() {
             public void run() {
                 new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
                 new DownloadContactList().execute("http://143.248.47.56:1337/pbcontacts");
             }
-        }.start();*/
-        new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
-        new DownloadContactList().execute("http://143.248.47.61:8000/pbcontacts");
+//        }.start();*/
+
+        new DownloadContactList().execute("http://143.248.47.61:8000/pbcontacts","http://143.248.47.61:8000/fbcontacts");
+       // new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
         return rootView;
     }
 
@@ -94,7 +100,11 @@ public class Tab1Fragment extends Fragment {
                 // [{name : a , id : b, photo: c},{},{}]
                 listViewAdapter = new ListViewAdapter(getActivity());
                 try {
-                    JSONArray jsonArray = new JSONArray(downloadUrl(url[0]));
+                    JSONArray jsonArray0 = new JSONArray(downloadUrl(url[0]));
+                    JSONArray jsonArray1 = new JSONArray(downloadUrl(url[1]));
+                    JSONArray jsonArray = new JSONArray(jsonArray0.toString().replace("]",",")+jsonArray1.toString().replace("[",""));
+                    Log.e("!!",jsonArray.toString());
+
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject one = jsonArray.getJSONObject(i);
                         String name;

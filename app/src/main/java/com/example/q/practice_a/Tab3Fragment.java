@@ -57,11 +57,7 @@ public class Tab3Fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new Thread() {
-            public void run() {
-                new DownloadPostList().execute("http://143.248.47.61:8000/postlist");
-            }
-        }.start();
+
     }
 
     @Override
@@ -81,11 +77,12 @@ public class Tab3Fragment extends Fragment {
             }
         });
         // 서버로 부터 게시글 목록 받아오고, 리스트 뷰에 넣기
-        /*new Thread() {
+        new Thread() {
             public void run() {
                 new DownloadPostList().execute("http://143.248.47.61:8000/postlist");
             }
-        }.start();*/
+        }.start();
+
         return rootview;
     }
 
@@ -132,7 +129,6 @@ public class Tab3Fragment extends Fragment {
                 // [{name : a , id : b, photo: c},{},{}]
 
                 try {
-                    Log.e("11","!!!!!11!!!!!1");
                    // jsonArray = new JSONArray(new HttpGetResponse().execute(url[0])/*downloadUrl(url[0])*/);
                     jsonArray = new JSONArray(downloadUrl(url[0]));
                     Log.e("222", String.valueOf(jsonArray.length()));

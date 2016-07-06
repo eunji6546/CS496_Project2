@@ -221,7 +221,7 @@ public class MainActivity extends FragmentActivity {
 
                     Thread thread1 = new Thread(){
                         public void run() {
-                            new HttpConnectionThread().doInBackground(params[0],params[1]);
+                            new HttpConnectionThread().doInBackground(params[1],params[0]);
                         }
                     };
                     thread1.start();
