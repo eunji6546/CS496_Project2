@@ -1,5 +1,6 @@
 package com.example.q.practice_a;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -66,6 +67,7 @@ public class BulletinWirte extends AppCompatActivity {
                             }
                         }
                     }.start();
+                    finish();
                 }
             });
         }

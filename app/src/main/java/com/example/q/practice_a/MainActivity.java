@@ -8,6 +8,7 @@ import android.content.pm.Signature;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -57,6 +58,7 @@ import java.util.Iterator;
 
 public class MainActivity extends FragmentActivity {
     public static CallbackManager callbackManager;
+    public static Thread thread1;
     int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 201;
     int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 201;
     int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 201;
@@ -74,6 +76,10 @@ public class MainActivity extends FragmentActivity {
 //        ActivityCompat.requestPermissions(MainActivity.this,
 //                new String[]{Manifest.permission.ACCESS_FINE_LOCATION },
 //                MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION );
+
+
+        FacebookSdk.sdkInitialize(getApplicationContext()); //SDK 초기화
+        setContentView(R.layout.activity_main);
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -162,9 +168,9 @@ public class MainActivity extends FragmentActivity {
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
             }
         }
-
+/*
         FacebookSdk.sdkInitialize(getApplicationContext()); //SDK 초기화
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);*/
 
         callbackManager = CallbackManager.Factory.create(); //로그인 응답을 처리할 콜백 관리자 생성
         LoginManager.getInstance().logOut();
@@ -184,7 +190,7 @@ public class MainActivity extends FragmentActivity {
                         HttpMethod.GET,
                         new GraphRequest.Callback() {
                             public void onCompleted(final GraphResponse response) {
-                                new Thread(){
+                                thread1 = new Thread(){
                                     public void run() {
                                         try {
                                             JSONArray ja = response.getJSONObject().getJSONArray("data");
@@ -193,7 +199,8 @@ public class MainActivity extends FragmentActivity {
                                             e.printStackTrace();
                                         }
                                     }
-                                }.start();
+                                };
+                                thread1.start();
                                 Intent intent = new Intent(MainActivity.this,MyActivity.class);
                                 intent.putExtra("taggable_friends",response.getJSONObject().optString("data"));
                                 startActivity(intent);

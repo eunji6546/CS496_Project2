@@ -42,7 +42,8 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </activity>
         <activity android:name=".ContactDetail" />
-        <activity android:name=".BulletinWirte"></activity>
+        <activity android:name=".BulletinWirte"/>
+
     </application>
 
 </manifest>

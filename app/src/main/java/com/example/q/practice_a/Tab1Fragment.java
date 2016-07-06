@@ -80,7 +80,7 @@ public class Tab1Fragment extends Fragment {
 
 
         // 휴대폰 연락처 보내기
-        new Thread(){
+        Thread thread2 = new Thread(){
             public void run() {
                 try {
                     JSONArray jarray = sendJSONinfo();
@@ -90,11 +90,17 @@ public class Tab1Fragment extends Fragment {
                     e.printStackTrace();
                 }
             }
-        }.start();
+        };
+        thread2.start();
         // Inflate the layout for this fragment
 
         // 서버에서 받아서 리스트 뷰에 넣기
 
+        try {
+            thread2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         new Thread() {
             public void run() {
                 new DownloadContactList().execute("http://143.248.47.61:8000/fbcontacts");
